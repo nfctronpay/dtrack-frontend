@@ -7,7 +7,7 @@
     dropdown for version is changes, the table will not update. For whatever reason, adding the toolbar fixes it.
     -->
     <div id="epssToolbar" class="bs-table-custom-toolbar">
-      <c-switch style="margin-left:1rem; margin-right:.5rem" id="showSuppressedFindings" color="primary" v-model="showSuppressedFindings" label v-bind="labelIcon" /><span class="text-muted">{{ $t('message.show_suppressed_findings') }}</span>
+      <CSwitch style="margin-left:1rem; margin-right:.5rem" id="showSuppressedFindings" color="primary" :checked.sync="showSuppressedFindings" label /><span class="text-muted">{{ $t('message.show_suppressed_findings') }}</span>
     </div>
 
     <bootstrap-table
@@ -21,16 +21,13 @@
 </template>
 
 <script>
-import { Switch as cSwitch } from '@coreui/vue';
-import common from "../../../shared/common";
-import bootstrapTableMixin from "../../../mixins/bootstrapTableMixin";
-import xssFilters from "xss-filters";
-import i18n from "../../../i18n";
-import permissionsMixin from "../../../mixins/permissionsMixin";
-import BootstrapToggle from 'vue-bootstrap-toggle';
-import ChartEpssVsCvss from "../../dashboard/ChartEpssVsCvss";
+import { loadUserPreferencesForBootstrapTable } from "@/shared/utils";
+import { CSwitch } from '@coreui/vue';
 import $ from "jquery";
-import {loadUserPreferencesForBootstrapTable} from "@/shared/utils";
+import xssFilters from "xss-filters";
+import bootstrapTableMixin from "../../../mixins/bootstrapTableMixin";
+import common from "../../../shared/common";
+import ChartEpssVsCvss from "../../dashboard/ChartEpssVsCvss";
 
 export default {
   props: {
@@ -38,8 +35,7 @@ export default {
   },
   mixins: [bootstrapTableMixin],
   components: {
-    cSwitch,
-    BootstrapToggle,
+    CSwitch,
     ChartEpssVsCvss
   },
   beforeCreate() {
@@ -48,10 +44,6 @@ export default {
   data() {
     return {
       showSuppressedFindings: this.showSuppressedFindings,
-      labelIcon: {
-        dataOn: '\u2713',
-        dataOff: '\u2715'
-      },
       columns: [
         {
           title: this.$t('message.component'),

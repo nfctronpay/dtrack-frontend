@@ -40,15 +40,15 @@
 </template>
 
 <script>
-  import $ from 'jquery';
-  import Vue from 'vue'
-  import common from "../../../shared/common";
-  import SeverityProgressBar from "../../components/SeverityProgressBar";
-  import xssFilters from "xss-filters";
-  import permissionsMixin from "../../../mixins/permissionsMixin";
+  import { loadUserPreferencesForBootstrapTable } from "@/shared/utils";
   import ProjectAddComponentModal from "@/views/portfolio/projects/ProjectAddComponentModal";
   import ProjectUploadBomModal from "@/views/portfolio/projects/ProjectUploadBomModal";
-  import {loadUserPreferencesForBootstrapTable} from "@/shared/utils";
+  import $ from 'jquery';
+  import Vue from 'vue';
+  import xssFilters from "xss-filters";
+  import permissionsMixin from "../../../mixins/permissionsMixin";
+  import common from "../../../shared/common";
+  import SeverityProgressBar from "../../components/SeverityProgressBar";
 
   export default {
     components: {ProjectUploadBomModal, ProjectAddComponentModal},

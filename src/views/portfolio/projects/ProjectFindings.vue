@@ -43,7 +43,7 @@
         <b-dropdown-item @click="downloadVex('csaf')" href="#">CSAF</b-dropdown-item>
       </b-dropdown>
       -->
-      <c-switch style="margin-left:1rem; margin-right:.5rem" id="showSuppressedFindings" color="primary" v-model="showSuppressedFindings" label v-bind="labelIcon" /><span class="text-muted">{{ $t('message.show_suppressed_findings') }}</span>
+      <CSwitch style="margin-left:1rem; margin-right:.5rem" id="showSuppressedFindings" color="primary" :checked.sync="showSuppressedFindings" label /><span class="text-muted">{{ $t('message.show_suppressed_findings') }}</span>
     </div>
 
     <bootstrap-table
@@ -59,16 +59,15 @@
 </template>
 
 <script>
-  import { Switch as cSwitch } from '@coreui/vue';
-  import common from "../../../shared/common";
-  import bootstrapTableMixin from "../../../mixins/bootstrapTableMixin";
+  import { loadUserPreferencesForBootstrapTable } from "@/shared/utils";
+  import ProjectUploadVexModal from "@/views/portfolio/projects/ProjectUploadVexModal";
+  import { CSwitch } from '@coreui/vue';
+  import $ from "jquery";
   import xssFilters from "xss-filters";
   import i18n from "../../../i18n";
+  import bootstrapTableMixin from "../../../mixins/bootstrapTableMixin";
   import permissionsMixin from "../../../mixins/permissionsMixin";
-  import BootstrapToggle from 'vue-bootstrap-toggle';
-  import ProjectUploadVexModal from "@/views/portfolio/projects/ProjectUploadVexModal";
-  import $ from "jquery";
-  import {loadUserPreferencesForBootstrapTable} from "@/shared/utils";
+  import common from "../../../shared/common";
 
   export default {
     props: {
@@ -79,8 +78,7 @@
       permissionsMixin
     ],
     components: {
-      cSwitch,
-      BootstrapToggle,
+      CSwitch,
       ProjectUploadVexModal
     },
     beforeCreate() {
@@ -89,10 +87,6 @@
     data() {
       return {
         showSuppressedFindings: this.showSuppressedFindings,
-        labelIcon: {
-          dataOn: '\u2713',
-          dataOff: '\u2715'
-        },
         columns: [
           {
             title: this.$t('message.component'),
@@ -253,7 +247,7 @@
                           <b-link style="margin-right:1.0rem" :href="'/vulnerabilities/' + alias.source + '/' + alias.vulnId">{{ alias.vulnId }}</b-link>
                           </span>
                         </b-card-text>
-                     </b-card>
+                      </b-card>
                     </div>
                     <b-form-group v-if="finding.vulnerability.title" id="fieldset-1" :label="this.$t('message.title')" label-for="input-1">
                       <b-form-input id="input-1" v-model="finding.vulnerability.title" class="form-control disabled" readonly trim />

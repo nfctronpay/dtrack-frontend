@@ -276,16 +276,16 @@ h6 {
   font-weight: 600;
   text-transform: uppercase;
 }
-.switch {
+.c-switch {
   vertical-align: middle;
   margin-top: .5rem;
   margin-bottom: .5rem;
   margin-right: 1rem;
 }
-.switch-slider {
+.c-switch-slider {
   background-color: $switch-bg;
 }
-.switch-slider:before {
+.c-switch-slider:before {
   background-color: $grey-200;
 }
 .card-footer > :not(:last-child) {
@@ -465,3 +465,12 @@ td a.detail-icon {
   font-weight: 700;
 }
 
+.chartjs-tooltip {
+  position: absolute;
+}
+
+// fix for https://github.com/DependencyTrack/frontend/issues/397
+// to het dropdown above header
+.dropdown-menu {
+  z-index: 1050;
+}

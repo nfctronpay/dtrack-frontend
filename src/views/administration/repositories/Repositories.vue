@@ -18,14 +18,14 @@
 </template>
 
 <script>
+  import { CSwitch } from "@coreui/vue";
   import xssFilters from "xss-filters";
-  import common from "../../../shared/common";
-  import RepositoryCreateRepositoryModal from "./RepositoryCreateRepositoryModal";
+  import BValidatedInputGroupFormInput from "../../../forms/BValidatedInputGroupFormInput";
   import i18n from "../../../i18n";
   import bootstrapTableMixin from "../../../mixins/bootstrapTableMixin";
-  import { Switch as cSwitch } from '@coreui/vue';
+  import common from "../../../shared/common";
   import EventBus from "../../../shared/eventbus";
-  import BValidatedInputGroupFormInput from "../../../forms/BValidatedInputGroupFormInput";
+  import RepositoryCreateRepositoryModal from "./RepositoryCreateRepositoryModal";
 
   export default {
     props: {
@@ -131,7 +131,7 @@
                   <b-col sm="6">
 
                     <div>
-                      <c-switch color="primary" v-model="internal" label v-bind="labelIcon" />{{$t('admin.internal')}}
+                      <CSwitch color="primary" :checked.sync="internal" label />{{$t('admin.internal')}}
                     </div>
 
                     <div>
@@ -153,17 +153,17 @@
                     </div>
 
                     <div>
-                      <c-switch color="primary" v-model="enabled" label v-bind="labelIcon" />{{$t('admin.enabled')}}
+                      <CSwitch color="primary" :checked.sync="enabled" label />{{$t('admin.enabled')}}
                     </div>
 
                     <div style="text-align:right">
-                       <b-button variant="outline-danger" @click="deleteRepository">{{ $t('admin.delete_repository') }}</b-button>
+                        <b-button variant="outline-danger" @click="deleteRepository">{{ $t('admin.delete_repository') }}</b-button>
                     </div>
                   </b-col>
                 </b-row>
               `,
               components: {
-                cSwitch,
+                CSwitch,
                 BValidatedInputGroupFormInput
               },
               data() {
@@ -176,10 +176,6 @@
                   password: row.password || null,
                   enabled: row.enabled,
                   uuid: row.uuid,
-                  labelIcon: {
-                    dataOn: '\u2713',
-                    dataOff: '\u2715'
-                  },
                 }
               },
               watch: {

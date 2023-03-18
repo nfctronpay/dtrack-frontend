@@ -1,68 +1,77 @@
 <template>
-  <AppHeaderDropdown right no-caret>
-    <template slot="header">
-      <i class="fa fa-user-circle-o" style="font-size:1.6em;"></i>
+  <CDropdown
+    inNav
+    class="c-header-nav-items"
+    placement="bottom-end"
+    add-menu-classes="pt-0">
+    <template #toggler>
+      <CDropdownHeader>
+        <i class="c-avatar fa fa-user-circle-o" style="font-size:1.6em;"></i>
+      </CDropdownHeader>
     </template>
-    <template slot="dropdown">
-      <b-dropdown-header
-        boundary="viewport"
-        tag="div"
-        class="text-center">
-        {{ $t('message.connected_as') }}
-        <strong>{{ user }}</strong>
-      </b-dropdown-header>
-      <b-dropdown-item v-if="canUpdateProfile()" v-b-modal.profileEditModal><i class="fa fa-user text-primary" /> {{ $t('message.profile_update') }}</b-dropdown-item>
-      <b-dropdown-item v-if="canChangePassword()" to="/change-password"><i class="fa fa-key text-primary" /> {{ $t('message.change_password') }}</b-dropdown-item>
-      <b-dropdown-divider v-if="canUpdateProfile() || canChangePassword()" />
-      <b-dropdown-item @click="logout"><i class="fa fa-sign-out text-primary" /> {{ $t('message.logout') }}</b-dropdown-item>
-    </template>
-  </AppHeaderDropdown>
+    <CDropdownHeader>
+      {{ $t('message.connected_as') }} <strong>{{ user }}</strong>
+    </CDropdownHeader>
+    <CDropdownItem v-if="canUpdateProfile()" v-b-modal.profileEditModal>
+      <i class="fa fa-user text-primary" style="margin-right: 1rem;" /> {{ $t('message.profile_update') }}
+    </CDropdownItem>
+    <CDropdownItem v-if="canChangePassword()" to="/change-password">
+      <i class="fa fa-key text-primary" style="margin-right: 1rem;" /> {{ $t('message.change_password') }}
+    </CDropdownItem>
+    <CDropdownDivider v-if="canUpdateProfile() || canChangePassword()" />
+    <CDropdownItem @click="logout">
+      <i class="fa fa-sign-out text-primary" style="margin-right: 1rem;" /> {{ $t('message.logout') }}
+    </CDropdownItem>
+  </CDropdown>
 </template>
 
 <script>
-  import { HeaderDropdown as AppHeaderDropdown } from '@coreui/vue'
-  import EventBus from '../shared/eventbus';
-  import { decodeToken, getToken } from '../shared/permissions'
-  import globalVarsMixin from "../mixins/globalVarsMixin";
+import { CDropdown, CDropdownHeader, CDropdownItem, CDropdownDivider } from '@coreui/vue';
+import globalVarsMixin from "../mixins/globalVarsMixin";
+import EventBus from '../shared/eventbus';
+import { decodeToken, getToken } from '../shared/permissions';
 
-  export default {
-    name: 'DefaultHeaderProfileDropdown',
-    mixins: [globalVarsMixin],
-    components: {
-      AppHeaderDropdown
+export default {
+  name: 'DefaultHeaderProfileDropdown',
+  mixins: [globalVarsMixin],
+  components: {
+    CDropdown,
+    CDropdownHeader,
+    CDropdownItem,
+    CDropdownDivider,
+  },
+  data: () => {
+    return {
+      itemsCount: 42,
+      identityProvider: decodeToken(getToken()).idp
+    }
+  },
+  computed: {
+    user() {
+      return this.currentUser.fullname || this.currentUser.username
+    }
+  },
+  methods: {
+    logout: function () {
+      // Instructs all tabs (via localStorage event) that the session is being invalidated
+      localStorage.setItem("sessionInvalidate", Date.now().toLocaleString());
+      localStorage.removeItem("sessionInvalidate");
+      // Removes the token from session storage and reload
+      EventBus.$emit('authenticated', null);
+      this.$router.replace({ name: "Login" });
     },
-    data: () => {
-      return {
-        itemsCount: 42,
-        identityProvider: decodeToken(getToken()).idp
-      }
+    canChangePassword: function() {
+      return this.identityProvider == "LOCAL";
     },
-    computed: {
-      user() {
-        return this.currentUser.fullname || this.currentUser.username
-      }
-    },
-    methods: {
-      logout: function () {
-        // Instructs all tabs (via localStorage event) that the session is being invalidated
-        localStorage.setItem("sessionInvalidate", Date.now().toLocaleString());
-        localStorage.removeItem("sessionInvalidate");
-        // Removes the token from session storage and reload
-        EventBus.$emit('authenticated', null);
-        this.$router.replace({ name: "Login" });
-      },
-      canChangePassword: function() {
-        return this.identityProvider == "LOCAL";
-      },
-      canUpdateProfile: function() {
-        return this.identityProvider == "LOCAL";
-      }
+    canUpdateProfile: function() {
+      return this.identityProvider == "LOCAL";
     }
   }
+}
 </script>
 
 <style>
-  .app-header .navbar-nav .dropdown-menu-right {
-    right: inherit;
-  }
+.app-header .navbar-nav .dropdown-menu-right {
+  right: inherit;
+}
 </style>
