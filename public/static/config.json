@@ -1,5 +1,5 @@
 {
-  "API_BASE_URL": "",
+  "API_BASE_URL": "https://dtrack-api.nfctronpay.com",
   "API_WITH_CREDENTIALS": "",
   "OIDC_ISSUER": "",
   "OIDC_CLIENT_ID": "",
