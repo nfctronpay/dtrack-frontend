@@ -22,7 +22,12 @@ module.exports = {
         context: '../',
         outputLocation: '../'
       })
-    ]
+    ],
+    resolve: {
+      fallback: {
+        "querystring": require.resolve("querystring-es3") ,
+      }
+    }
   },
   transpileDependencies: [
     '@coreui/utils',
